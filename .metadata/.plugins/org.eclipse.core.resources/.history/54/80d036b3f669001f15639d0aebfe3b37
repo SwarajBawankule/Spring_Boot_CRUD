@@ -1,0 +1,41 @@
+package com.Project.demo.service;
+
+import java.awt.print.Pageable;
+import java.util.Optional;
+
+import org.hibernate.query.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.Project.demo.Entity.Category;
+import com.Project.demo.repository.CategoryRepository;
+
+
+@Service
+public class CategoryService {
+
+	 @Autowired
+	    private CategoryRepository categoryRepository;
+
+	    public Page<Category> getAllCategories(Pageable pageable) {
+	        return categoryRepository.findAll(pageable);
+	    }
+
+	    public Optional<Category> getCategoryById(Long id) {
+	        return categoryRepository.findById(id);
+	    }
+
+	    public Category createCategory(Category category) {
+	        return categoryRepository.save(category);
+	    }
+
+	    public Category updateCategory(Long id, Category categoryDetails) {
+	        Category category = categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
+	        category.setName(categoryDetails.getName());
+	        return categoryRepository.save(category);
+	    }
+
+	    public void deleteCategory(Long id) {
+	        categoryRepository.deleteById(id);
+	    }
+}
